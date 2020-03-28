@@ -79,7 +79,7 @@ public class CourseDetail implements Comparable<CourseDetail> {
 		
 		CourseDetail requerimientos2 = new CourseDetail("Especificación de Requerimientos", "El pequeño rufián", 8, diasDeClase2);
 		
-		ArrayList<DayPeriodActivity> diasDeClase3 =  DayPeriodActivity.generateActivityPeriodList(new DayPeriodActivity(Days.TUESDAY, 2), new DayPeriodActivity(Days.THURSDAY, 2));
+		ArrayList<DayPeriodActivity> diasDeClase3 =  DayPeriodActivity.generateActivityPeriodList(new DayPeriodActivity(Days.TUESDAY, 4), new DayPeriodActivity(Days.TUESDAY, 4));
 		
 		CourseDetail requerimientos3 = new CourseDetail("Especificación de Requerimientos", "Le rufus rufilio", 10, diasDeClase3);
 		
@@ -93,7 +93,6 @@ public class CourseDetail implements Comparable<CourseDetail> {
 		System.out.println("");
 		sortCourseDetailList(details);
 		printDetailList(details);
-		
 
 	}
 
