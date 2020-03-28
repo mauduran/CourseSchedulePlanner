@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Schedule",
+            "request": "launch",
+            "mainClass": "buildSchedule.Schedule",
+            "projectName": "SchedulePlannerProject"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Course",
+            "request": "launch",
+            "mainClass": "buildSchedule.Course",
+            "projectName": "SchedulePlannerProject"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - CourseDetail",
             "request": "launch",
             "mainClass": "buildSchedule.CourseDetail",
