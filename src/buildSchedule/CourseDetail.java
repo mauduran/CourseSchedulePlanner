@@ -44,9 +44,9 @@ public class CourseDetail implements Comparable<CourseDetail> {
 		    }
 		    periodsPerDay += "\n";
 		    
-		}
+		} 
 		
-		String result = String.format("Name: %s\nProfessor: %s\nPriority: %d\n%s", this.name, this.professor, this.priority, periodsPerDay);
+		String result = String.format("Professor: %s\nPriority: %d\n\n%s",  this.professor, this.priority, periodsPerDay);
 		
 		return result;
 	}
@@ -55,46 +55,30 @@ public class CourseDetail implements Comparable<CourseDetail> {
 		Arrays.sort(details);
 	}
 	
+
 	public static void printDetailList(CourseDetail[] details) {
 		for(CourseDetail courseDet: details) {
 			System.out.println(courseDet.toString());
 		}
 	}
 	
+	public static CourseDetail[] generateCourseDetailArray(CourseDetail ... details){
+		return details;
+	}
 	
 	@Override
 	public int compareTo(CourseDetail o) {
+		if(o==null) return -1;
 		return o.priority - this.priority;
 	}
 	
-	
-	public static void main(String[] args) {
-		CourseDetail[] details = new CourseDetail[3];
-		
-		ArrayList<DayPeriodActivity> diasDeClase =  DayPeriodActivity.generateActivityPeriodList(new DayPeriodActivity(Days.MONDAY, 1), new DayPeriodActivity(Days.THURSDAY, 1));
-		
-		CourseDetail requerimientos = new CourseDetail("Especificación de Requerimientos", "Ricardo Anaya", diasDeClase);
-		
-		ArrayList<DayPeriodActivity> diasDeClase2 =  DayPeriodActivity.generateActivityPeriodList(new DayPeriodActivity(Days.MONDAY, 2), new DayPeriodActivity(Days.WEDNESDAY, 2));
-		
-		CourseDetail requerimientos2 = new CourseDetail("Especificación de Requerimientos", "El pequeño rufián", 8, diasDeClase2);
-		
-		ArrayList<DayPeriodActivity> diasDeClase3 =  DayPeriodActivity.generateActivityPeriodList(new DayPeriodActivity(Days.TUESDAY, 4), new DayPeriodActivity(Days.TUESDAY, 4));
-		
-		CourseDetail requerimientos3 = new CourseDetail("Especificación de Requerimientos", "Le rufus rufilio", 10, diasDeClase3);
-		
-		
-		details[2] = requerimientos;
-		details[0] = requerimientos2;
-		details[1] = requerimientos3;
-		printDetailList(details);
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		sortCourseDetailList(details);
-		printDetailList(details);
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof CourseDetail) || obj==null) return false;
 
+		CourseDetail object = (CourseDetail) obj;
+
+		return this.professor.equals(object.professor) && this.classDays.equals(object.classDays);
 	}
-
-
+	
 }
