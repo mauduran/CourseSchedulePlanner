@@ -6,15 +6,17 @@ import java.util.EnumMap;
 
 
 public class CourseDetail implements Comparable<CourseDetail> {
-	String name;
 	String professor;
 	int priority;
+	String code;
+	Course parent;
 	EnumMap<Days, ArrayList<Integer>> classDays;
 
-	public CourseDetail(String name, String professor, ArrayList<DayPeriodActivity> periods) {
-		this.name = name;
+	public CourseDetail(String professor, String code, Course parent, ArrayList<DayPeriodActivity> periods) {
 		this.professor = professor;
+		this.parent = parent;
 		this.priority = 1;
+		this.code = code;
 		this.classDays = new EnumMap<Days, ArrayList<Integer>>(Days.class);
 		for (Days day : Days.values()) { 
 		    this.classDays.put(day, new ArrayList<>());
@@ -28,8 +30,8 @@ public class CourseDetail implements Comparable<CourseDetail> {
 		}
 	}
 	
-	public CourseDetail(String name, String professor, int priority, ArrayList<DayPeriodActivity> periods) {
-		this(name,  professor, periods);
+	public CourseDetail(String professor, String code, Course parent, int priority, ArrayList<DayPeriodActivity> periods) {
+		this(professor, code, parent, periods);
 		this.priority = priority;
 	}
 	
