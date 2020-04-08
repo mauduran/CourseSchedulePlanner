@@ -24,6 +24,8 @@ public class Schedule {
 	public Schedule clone(){
 		Schedule newSched = new Schedule(this.maxClassesPerDay);
 		newSched.courseCount = this.courseCount;
+
+		//
 		newSched.courseDetails = (HashMap<Course, CourseDetail>) this.courseDetails.clone();
 		newSched.coursesAdded = (HashSet<Course>) this.coursesAdded.clone();
 
