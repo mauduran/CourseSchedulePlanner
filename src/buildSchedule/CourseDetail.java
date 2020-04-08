@@ -28,6 +28,8 @@ public class CourseDetail implements Comparable<CourseDetail> {
 			if(!this.classDays.get(currentPeriod.day).contains(currentPeriod.period)) 
 				this.classDays.get(currentPeriod.day).add(currentPeriod.period);
 		}
+
+		this.parent.courseDetails.add(this);
 	}
 	
 	public CourseDetail(String professor, String code, Course parent, int priority, ArrayList<DayPeriodActivity> periods) {
