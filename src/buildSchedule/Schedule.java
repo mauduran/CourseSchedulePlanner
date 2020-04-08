@@ -11,6 +11,7 @@ public class Schedule {
 	int maxClassesPerDay;
 	HashSet<Course> coursesAdded;
 	HashMap<Course, CourseDetail> courseDetails;
+	// int prioritySum = 0;
 
 	public Schedule(int maxClassesPerDay) {
 		this.maxClassesPerDay = maxClassesPerDay;
@@ -20,6 +21,18 @@ public class Schedule {
 		this.courseDetails = new HashMap<>();
 	}
 
+	public Schedule clone(){
+		Schedule newSched = new Schedule(this.maxClassesPerDay);
+		newSched.courseCount = this.courseCount;
+		newSched.courseDetails = (HashMap<Course, CourseDetail>) this.courseDetails.clone();
+		newSched.coursesAdded = (HashSet<Course>) this.coursesAdded.clone();
+
+		for(int i=0; i<5; i++){
+			newSched.calendar[i] = this.calendar[i].clone();
+		}
+
+		return newSched;
+	}
 	public boolean addCourseToSchedule(CourseDetail detail){
 		if(detail==null || detail.parent==null || coursesAdded.contains(detail.parent)) return false;
 		
@@ -29,8 +42,49 @@ public class Schedule {
 		coursesAdded.add(detail.parent);
 		courseDetails.put(detail.parent, detail);
 
+		this.courseCount++;
+
 		return true;	
 	}
+
+
+	public boolean removeCourseFromSchedule(CourseDetail detail){
+		if(detail==null || detail.parent==null || !this.coursesAdded.contains(detail.parent) 
+		|| !this.courseDetails.get(detail.parent).equals(detail)) return false;
+
+		ArrayList<Integer> monday = detail.classDays.get(Days.MONDAY);
+		ArrayList<Integer> tuesday = detail.classDays.get(Days.TUESDAY);
+		ArrayList<Integer> wednesday = detail.classDays.get(Days.WEDNESDAY);
+		ArrayList<Integer> thursday = detail.classDays.get(Days.THURSDAY);
+		ArrayList<Integer> friday = detail.classDays.get(Days.FRIDAY);
+
+		for (Integer period : monday) {
+			this.calendar[0][period-1] = null;
+		}
+
+		for (Integer period : tuesday) {
+			this.calendar[1][period-1] = null;
+		}
+		for (Integer period : wednesday) {
+			this.calendar[2][period-1] = null;
+		}
+		for (Integer period : thursday) {
+			this.calendar[3][period-1] = null;
+		}
+		for (Integer period : friday) {
+			this.calendar[4][period-1] = null;
+		}
+
+		this.coursesAdded.remove(detail.parent);
+		this.courseDetails.remove(detail.parent);
+
+		this.courseCount--;
+		return true;
+		
+
+	}
+
+
 
 	public boolean addDetailToSchedule(CourseDetail detail){
 		if(detail == null || detail.classDays.size()==0) return false;
@@ -99,67 +153,12 @@ public class Schedule {
 			}
 			str += "\n";
 		}
+
+		for (CourseDetail detail : this.courseDetails.values()) {
+			str += String.format("%s %s: %s\n", detail.parent.name, detail.code, detail.professor);
+		}
 		return str;
 	}
 	
-	public static void main( String[] args) {
-
-		//Clase de Requerimientos 
-		Course RequerimientosClase = new Course("Especificación de requerimientos", "req0123");
-
-		ArrayList<DayPeriodActivity> diasDeClase = DayPeriodActivity.generateActivityPeriodList();
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase, Days.MONDAY, 1);
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase, Days.THURSDAY, 1);
-        CourseDetail requerimientos = new CourseDetail( "Ricardo Anaya", "RQ1", RequerimientosClase, diasDeClase);
-        // CourseDetail[] details= CourseDetail.generateCourseDetailArray(requerimientos);
-
-		//Clase de formales
-
-		Course LenguajesClase = new Course("Lenguajes Formales", "LF0123");
-
-		ArrayList<DayPeriodActivity> diasDeClase1 = DayPeriodActivity.generateActivityPeriodList();
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase1, Days.MONDAY, 3);
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase1, Days.WEDNESDAY, 3);
-        CourseDetail lenguajesFormales = new CourseDetail("Luis Peres", "LF1",LenguajesClase, diasDeClase1);
-        
-        // CourseDetail[] details1= CourseDetail.generateCourseDetailArray(LenguajesFormales);    
-        
-        //
-		//Clase de bases
-		Course BasesClase = new Course("Bases de datos", "BTDT0123");
-
-		ArrayList<DayPeriodActivity> diasDeClase2 = DayPeriodActivity.generateActivityPeriodList();
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase2, Days.TUESDAY, 3);
-        DayPeriodActivity.addActivityPeriodToList(diasDeClase2, Days.THURSDAY, 3);
-        CourseDetail bases = new CourseDetail("Victor Hugo", "BD1", BasesClase,  diasDeClase2);
-        
-        // CourseDetail[] details2= CourseDetail.generateCourseDetailArray(bases);
-            
-
-		//Clase gráfica
-		Course GraficaClase = new Course("Programación Gráfica", "graf102");
-
-		ArrayList<DayPeriodActivity> diasDeClaseGrafica = DayPeriodActivity.generateActivityPeriodList();
-        DayPeriodActivity.addActivityPeriodToList(diasDeClaseGrafica, Days.MONDAY, 4);
-        DayPeriodActivity.addActivityPeriodToList(diasDeClaseGrafica, Days.THURSDAY, 4);
-
-        CourseDetail grafica = new CourseDetail("Hugo Ivan Piza", "GRA1", GraficaClase, diasDeClaseGrafica);
-        
-        // CourseDetail[] graficaDetails= CourseDetail.generateCourseDetailArray(grafica);
-            
-		Schedule mySchedule = new Schedule(8);
-
-		mySchedule.addCourseToSchedule(requerimientos);
-
-		mySchedule.addCourseToSchedule(grafica);
-
-		mySchedule.addCourseToSchedule(bases);
-		
-		mySchedule.addCourseToSchedule(lenguajesFormales);
-
-		System.out.println(mySchedule);
-	}
-
-
 	
 }
